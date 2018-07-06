@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <title>Vue Dropdown Date Component </title>
+  </head>
+  <body>
+    <div class="container">
+        <h1>Dropdown-Date</h1>
+        <a href="/">Home</a> <br>
+        <form id="form" v-cloak action="/" method="GET">
+            <div class="form-group">
+                <vue-dropdown-date id="birthDate" name="birthDate"></vue-dropdown-date>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script> <!-- Contains Popper.js already -->
+    <script src="/js/vue.js"></script>
+    <script src="/js/vue-dropdown-date.js"></script>
+    <script>
+        Vue.component('vue-dropdown-date', VueDropDownDate.date); 
+        var v = new Vue({
+            el: "#form",
+            delimiters: ["${", "}"],
+            data: {
+           // moment:moment
+            }
+        });
+        
+    </script>
+  </body>
+</html>
