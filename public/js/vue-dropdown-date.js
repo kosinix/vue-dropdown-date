@@ -50,7 +50,9 @@ VueDropDownDate.date = {
             return days
         },
         dateValue: function(){
-            return moment(this.year+'-'+this.month+'-'+this.day, 'YYYY-M-D').format('YYYY-MM-DD');
+            var value = moment(this.year+'-'+this.month+'-'+this.day, 'YYYY-M-D').format('YYYY-MM-DD');
+            this.$emit('change', value);
+            return value;
         }
     },
     template: '' +
@@ -59,16 +61,18 @@ VueDropDownDate.date = {
     '<div class="form-row">'+
         '<div class="col">'+
             '<select v-model="month" class="form-control">'+
+                '<option value=""></option>'+
                 '<option v-for="(m, index) in months" v-bind:value="index+1">{{m}}</option>'+
             '</select>'+
         '</div>'+
         '<div class="col">'+
             '<select v-model="day" class="form-control">'+
+                '<option value=""></option>'+
                 '<option v-for="d in days" v-bind:value="d">{{d}}</option>'+
             '</select>'+
         '</div>'+
         '<div class="col">'+
-            '<input v-model="year" type="number" class="form-control" maxlength="4">'+
+            '<input v-model="year" type="number" class="form-control" min="1">'+
         '</div>'+
     '</div>'+
 '</div>'
