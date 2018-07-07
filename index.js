@@ -44,7 +44,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.get('/', (req, res, next)=>{
     try {
-        res.render('index.html')
+        res.render('index.html', {now:req.query.birthDate})
     } catch (err){
         next(err);
     }
