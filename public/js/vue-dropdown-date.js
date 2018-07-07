@@ -6,60 +6,10 @@ function VueDropDownDate() {
 VueDropDownDate.date = {
     data: function () {
         return {
-            year:"",
-            // moment:moment,
-            currentDay: null,
-            months: [
-                {
-                    name: "January",
-                    value: 1
-                },
-                {
-                    name: "Febeuary",
-                    value: 2
-                },
-                {
-                    name: "March",
-                    value: 3
-                },
-                {
-                    name: "April",
-                    value: 4
-                },
-                {
-                    name: "May",
-                    value: 5
-                },
-                {
-                    name: "June",
-                    value: 6
-                },
-                {
-                    name: "July",
-                    value: 7
-                },
-                {
-                    name: "August",
-                    value: 8
-                },
-                {
-                    name: "september",
-                    value: 9
-                },
-                {
-                    name: "October",
-                    value: 10
-                },
-                {
-                    name: "November",
-                    value: 11
-                },
-                {
-                    name: "December",
-                    value: 12
-                }
-            ],
-            days: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+            year: moment().format('YYYY'),
+            month: moment().format('M'),
+            day: moment().format('D'),
+            months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         }
     },
     props: {
@@ -77,44 +27,48 @@ VueDropDownDate.date = {
             default: 'vue-dropdown-date',
             type: String
         },
-    },
-    methods: {
-      setDay() {
-        // this.currentTime = moment("2018-6-7").format('M');
-       }
+        value: {
+            default: '',
+            type: String
+        },
     },
     created: function(){
-        // this.currentTime = moment("2018-6-7").format('M');
+        let value = moment(this.value);
+        this.year = value.format('YYYY');
+        this.month = value.format('M');
+        this.day = value.format('D');
     },
     computed: {
-       dateValue: function(){
-        return this.year;
-       }
+        maxDays: function(){
+            return moment(this.year+'-'+this.month, 'YYYY-M').daysInMonth();
+        },
+        days: function(){
+            var days = [];
+            for(var i = 0; i < this.maxDays; i++){
+                days.push(i+1);
+            }
+            return days
+        },
+        dateValue: function(){
+            return moment(this.year+'-'+this.month+'-'+this.day, 'YYYY-M-D').format('YYYY-MM-DD');
+        }
     },
     template: '' +
 '<div v-bind:class="className">'+
-'<input type="hidden" v-bind:name="name" v-model="dateValue">'+
-    '<div class="container">'+
-        '<div class="row">'+
-            '<div class="col-lg-4 ml-auto">'+
-                '<div class="form-group">'+
-                    '<select class="form-control">'+
-                    '<option v-for="month in months" v-bind:value="month.value">{{month.name}}</option>'+
-                    '</select>'+
-                '</div>'+
-            '</div>'+
-            '<div class="col-lg-4">'+
-                '<div class="form-group">'+
-                    '<select class="form-control">'+
-                    '<option v-for="day in days" v-bind:value="day">{{day}}</option>'+
-                    '</select>'+
-                '</div>'+
-            '</div>'+
-            '<div class="col-lg-4 mr-auto">'+
-                '<div class="form-group">'+
-                    '<input type="text" class="form-control" placeholder="YYYY" v-model="year" maxlength="4">'+
-                '</div>'+
-            '</div>'+
+    '<input type="hidden" v-bind:name="name" v-model="dateValue">'+
+    '<div class="form-row">'+
+        '<div class="col">'+
+            '<select v-model="month" class="form-control">'+
+                '<option v-for="(m, index) in months" v-bind:value="index+1">{{m}}</option>'+
+            '</select>'+
+        '</div>'+
+        '<div class="col">'+
+            '<select v-model="day" class="form-control">'+
+                '<option v-for="d in days" v-bind:value="d">{{d}}</option>'+
+            '</select>'+
+        '</div>'+
+        '<div class="col">'+
+            '<input v-model="year" type="number" class="form-control" maxlength="4">'+
         '</div>'+
     '</div>'+
 '</div>'
