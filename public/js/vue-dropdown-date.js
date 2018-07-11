@@ -33,14 +33,24 @@ VueDropDownDate.date = {
         },
     },
     created: function(){
-        let value = moment(this.value);
-        this.year = value.format('YYYY');
-        this.month = value.format('M');
-        this.day = value.format('D');
+        var date = moment(this.value);
+        if (date.isValid()){
+            this.year = date.format('YYYY');
+            this.month = date.format('M');
+            this.day = date.format('D');
+        } else {
+            this.year = '';
+            this.month = '';
+            this.day = '';
+        }
     },
     computed: {
         maxDays: function(){
-            return moment(this.year+'-'+this.month, 'YYYY-M').daysInMonth();
+            var date = moment(this.year+'-'+this.month, 'YYYY-M');
+            if(!date.isValid()){
+                return 31; // Default to 31 days
+            }
+            return date.daysInMonth();
         },
         days: function(){
             var days = [];
@@ -61,18 +71,18 @@ VueDropDownDate.date = {
     '<div class="form-row">'+
         '<div class="col">'+
             '<select v-model="month" class="form-control">'+
-                '<option value=""></option>'+
+                '<option value="">Month</option>'+
                 '<option v-for="(m, index) in months" v-bind:value="index+1">{{m}}</option>'+
             '</select>'+
         '</div>'+
         '<div class="col">'+
             '<select v-model="day" class="form-control">'+
-                '<option value=""></option>'+
+                '<option value="">Day</option>'+
                 '<option v-for="d in days" v-bind:value="d">{{d}}</option>'+
             '</select>'+
         '</div>'+
         '<div class="col">'+
-            '<input v-model="year" type="number" class="form-control" min="1">'+
+            '<input v-model="year" type="number" class="form-control" placeholder="Year" min="1">'+
         '</div>'+
     '</div>'+
 '</div>'
